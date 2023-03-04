@@ -1,7 +1,7 @@
 a = float(input())
 b = float(input())
 c = float(input())
-if a == 0:
+if a==0 or b==0 or c==0:
     print('Уравнение не является квадратичным')
 else:
     d = b**2-4*a*c
