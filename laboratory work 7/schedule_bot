@@ -1,0 +1,262 @@
+import telebot 
+from telebot import types
+import psycopg2
+from datetime import datetime
+
+now = datetime.now()
+current_week = int(now.strftime("%V"))
+day_of_week = now.weekday() #0-6
+
+conn = psycopg2.connect(database="schedule",                     
+                        user="postgres",
+                        password="4230",
+                        host="localhost",
+                        port="5432")
+
+cursor = conn.cursor()
+cursor.execute('SELECT * FROM public.firstweek')
+records = list(cursor.fetchall())
+
+bot = telebot.TeleBot("6270775371:AAGDr3H_JFRaPiyPxWdfWwasfzFyb1-WFpY")
+
+#first week
+monday_f = f'\n\n{records[0][0]}. {records[0][1]}\n<b>{records[2][2]}</b>\
+        \n\n{records[1][0]}. {records[1][1]}\n<b>{records[0][2]}</b>\n{records[0][3]}\nЛаб. занятие {records[0][4]}\
+            \n\n{records[2][0]}. {records[2][1]}\n<b>{records[1][2]}</b>\n{records[1][3]}\nПрактика {records[1][4]}\
+                \n\n{records[3][0]}. {records[3][1]}\n<b>{records[0][2]}</b>\n{records[2][3]}\nЛекция {records[2][4]}\
+                    \n\n{records[4][0]}. {records[4][1]}\n<b>{records[2][2]}</b>'
+                    
+tsuesday_f = f'\n\n{records[0][0]}. {records[0][1]}\n<b>{records[2][2]}</b>\
+        \n\n{records[1][0]}. {records[1][1]}\n<b>{records[2][2]}</b>\
+            \n\n{records[2][0]}. {records[2][1]}\n<b>{records[2][2]}</b>\
+                \n\n{records[3][0]}. {records[3][1]}\n<b>{records[2][2]}</b>\
+                    \n\n{records[4][0]}. {records[4][1]}\n<b>{records[2][2]}</b>'
+                    
+wednesday_f = f'\n\n{records[0][0]}. {records[0][1]}\n<b>{records[2][2]}</b>\
+        \n\n{records[1][0]}. {records[1][1]}\n<b>{records[2][2]}</b>\
+            \n\n{records[2][0]}. {records[2][1]}\n<b>{records[2][2]}</b>\
+                \n\n{records[3][0]}. {records[3][1]}\n<b>{records[2][2]}</b>\
+                    \n\n{records[4][0]}. {records[4][1]}\n<b>{records[2][2]}</b>'
+            
+thursday_f = f'\n\n{records[0][0]}. {records[0][1]}\n<b>{records[3][2]}</b>\n{records[3][3]}\nПрактика {records[3][4]}\
+        \n\n{records[1][0]}. {records[1][1]}\n<b>{records[4][2]}</b>\n{records[4][3]}\nПрактика {records[4][4]}\
+            \n\n{records[2][0]}. {records[2][1]}\n<b>{records[4][2]}</b>\n{records[4][3]}\nЛекция {records[5][4]}\
+                \n\n{records[3][0]}. {records[3][1]}\n<b>{records[5][2]}</b>\n{records[5][3]}\nЛаб. занятие {records[6][4]}\
+                    \n\n{records[4][0]}. {records[4][1]}\n<b>{records[6][2]}</b>\n{records[6][3]}\nЛекция {records[7][4]}'
+            
+friday_f = f'\n\n{records[0][0]}. {records[0][1]}\n<b>{records[2][2]}</b>\
+        \n\n{records[1][0]}. {records[1][1]}\n<b>{records[2][2]}</b>\
+            \n\n{records[2][0]}. {records[2][1]}\n<b>{records[7][2]}</b>\n{records[7][3]}\nПрактика {records[8][4]}\
+                \n\n{records[3][0]}. {records[3][1]}\n<b>{records[1][2]}</b>\n{records[1][3]}\nПрактика {records[9][4]}\
+                    \n\n{records[4][0]}. {records[4][1]}\n<b>{records[2][2]}</b>'
+
+saturday_f = f'\n\n{records[0][0]}. {records[0][1]}\n<b>{records[8][2]}</b>\n{records[8][3]}\nПрактика {records[10][4]}\
+        \n\n{records[1][0]}. {records[1][1]}\n<b>{records[9][2]}</b>\n{records[9][3]}\nПрактика {records[11][4]}\
+            \n\n{records[2][0]}. {records[2][1]}\n<b>{records[9][2]}</b>\n{records[9][3]}\nЛаб. занятие {records[10][4]}\
+                \n\n{records[3][0]}. {records[3][1]}\n<b>{records[2][2]}</b>\
+                    \n\n{records[4][0]}. {records[4][1]}\n<b>{records[2][2]}</b>'
+
+#last week
+monday_l = f'\n\n{records[0][0]}. {records[0][1]}\n<b>{records[5][2]}</b>\n{records[10][3]}\nПрактика {records[12][4]}\
+        \n\n{records[1][0]}. {records[1][1]}\n<b>{records[6][2]}</b>\n{records[6][3]}\nПрактика {records[13][4]}\
+            \n\n{records[2][0]}. {records[2][1]}\n<b>{records[1][2]}</b>\n{records[1][3]}\nПрактика {records[9][4]}\
+                \n\n{records[3][0]}. {records[3][1]}\n<b>{records[2][2]}</b>\
+                    \n\n{records[4][0]}. {records[4][1]}\n<b>{records[2][2]}</b>'
+                    
+tsuesday_l = f'\n\n{records[2][0]}. {records[2][1]}\n<b>{records[4][2]}</b>\n{records[4][3]}\nПрактика {records[4][4]}\
+        \n\n{records[1][0]}. {records[1][1]}\n<b>{records[4][2]}</b>\n{records[4][3]}\nЛекция {records[5][4]}\
+            \n\n{records[1][0]}. {records[1][1]}\n<b>{records[7][2]}</b>\n{records[7][3]}\nЛекция {records[14][4]}\
+                \n\n{records[2][0]}. {records[2][1]}\n<b>{records[1][2]}</b>\n{records[1][3]}\nПрактика {records[9][4]}\
+                    \n\n{records[4][0]}. {records[4][1]}\n<b>{records[2][2]}</b>'
+                    
+wednesday_l = f'\n\n{records[0][0]}. {records[0][1]}\n<b>{records[2][2]}</b>\
+        \n\n{records[1][0]}. {records[1][1]}\n<b>{records[5][2]}</b>\n{records[11][3]}\nЛекция {records[15][4]}\
+            \n\n{records[2][0]}. {records[2][1]}\n<b>{records[7][2]}</b>\n{records[7][3]}\nПрактика {records[16][4]}\
+                \n\n{records[3][0]}. {records[3][1]}\n<b>{records[3][2]}</b>\n{records[3][3]}\nПрактика {records[12][4]}\
+                    \n\n{records[4][0]}. {records[4][1]}\n<b>{records[6][2]}</b>\n{records[12][3]}\nЛаб. занятие {records[17][4]}'
+    
+thursday_l = f'\n\n{records[0][0]}. {records[0][1]}\n<b>{records[2][2]}</b>\
+        \n\n{records[1][0]}. {records[1][1]}\n<b>{records[0][2]}</b>\n{records[0][3]}\nЛаб. занятие {records[0][4]}\
+            \n\n{records[2][0]}. {records[2][1]}\n<b>{records[9][2]}</b>\n{records[9][3]}\nЛекция {records[18][4]}\
+                \n\n{records[3][0]}. {records[3][1]}\n<b>{records[2][2]}</b>\
+                    \n\n{records[4][0]}. {records[4][1]}\n<b>{records[2][2]}</b>'
+            
+friday_l = f'\n\n{records[0][0]}. {records[0][1]}\n<b>{records[2][2]}</b>\
+        \n\n{records[1][0]}. {records[1][1]}\n<b>{records[2][2]}</b>\
+            \n\n{records[2][0]}. {records[2][1]}\n<b>{records[2][2]}</b>\
+                \n\n{records[3][0]}. {records[3][1]}\n<b>{records[2][2]}</b>\
+                    \n\n{records[4][0]}. {records[4][1]}\n<b>{records[2][2]}</b>'
+                    
+saturday_l = f'\n\n{records[0][0]}. {records[0][1]}\n<b>{records[2][2]}</b>\
+        \n\n{records[1][0]}. {records[1][1]}\n<b>{records[2][2]}</b>\
+            \n\n{records[2][0]}. {records[2][1]}\n<b>{records[2][2]}</b>\
+                \n\n{records[3][0]}. {records[3][1]}\n<b>{records[2][2]}</b>\
+                    \n\n{records[4][0]}. {records[4][1]}\n<b>{records[2][2]}</b>'
+
+if current_week % 2 != 0 :
+    @bot.message_handler(commands=['today'])
+    def Today(message):
+        if day_of_week == 0:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА СЕГОДНЯ:</b>{monday_f}', parse_mode='html')
+        elif day_of_week == 1:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА СЕГОДНЯ:</b>{tsuesday_f}', parse_mode='html')
+        elif day_of_week == 2:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА СЕГОДНЯ:</b>{wednesday_f}', parse_mode='html')
+        elif day_of_week == 3:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА СЕГОДНЯ:</b>{thursday_f}' , parse_mode='html')
+        elif day_of_week == 4:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА СЕГОДНЯ:</b>{friday_f}', parse_mode='html')
+        elif day_of_week == 5:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА СЕГОДНЯ:</b>{saturday_f}', parse_mode='html')
+        elif day_of_week == 6:
+            bot.send_message(message.chat.id, f'<b>ВОСКРЕСЕНЬЕ - ВЫХОДНОЙ:</b>', parse_mode='html')
+            
+    @bot.message_handler(commands=['tomorrow'])
+    def Tomorrow(message):
+        if day_of_week == 0:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ЗАВТРА:</b>{tsuesday_f}', parse_mode='html')
+        elif day_of_week == 1:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ЗАВТРА:</b>{wednesday_f}', parse_mode='html')
+        elif day_of_week == 2:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ЗАВТРА:</b>{thursday_f}', parse_mode='html')
+        elif day_of_week == 3:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ЗАВТРА:</b>{friday_f}' , parse_mode='html')
+        elif day_of_week == 4:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ЗАВТРА:</b>{saturday_f}', parse_mode='html')
+        elif day_of_week == 5:
+            bot.send_message(message.chat.id, f'<b>ВОСКРЕСЕНЬЕ - ВЫХОДНОЙ:</b>', parse_mode='html')
+        elif day_of_week == 6:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ЗАВТРА:</b>{monday_f}', parse_mode='html')
+
+    @bot.message_handler(commands=['monday'])
+    def Monday(message):
+        bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ПОНЕДЕЛЬНИК:</b>{monday_f}', parse_mode='html')
+        
+    @bot.message_handler(commands=['tsuesday'])
+    def Tsuesday(message):
+        bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ВТОРНИК:</b>{tsuesday_f}', parse_mode='html')
+        
+    @bot.message_handler(commands=['wednesday'])
+    def Wednesday(message):
+        bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА СРЕДУ:</b>{wednesday_f}', parse_mode='html')
+
+    @bot.message_handler(commands=['thursday'])
+    def Thursday(message):
+        bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ЧЕТВЕРГ:</b>{thursday_f}' , parse_mode='html')
+
+    @bot.message_handler(commands=['friday'])
+    def Friday(message):
+        bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ПЯТНИЦУ:</b>{friday_f}', parse_mode='html')
+        
+    @bot.message_handler(commands=['saturday'])
+    def Saturday(message):
+        bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА СУББОТУ:</b>{saturday_f}', parse_mode='html')
+
+    @bot.message_handler(commands=['week'])
+    def week(message):
+        m = '_' * 25
+        bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА НЕДЕЛЮ:</b>\n\n{m}\n\n<b>ПОНЕДЕЛЬНИК:</b>{monday_f}\
+            \n\n{m}\n\n<b>ВТОРНИК:</b>{tsuesday_f}\n\n{m}\n\n<b>СРЕДА:</b>{wednesday_f}\n\n{m}\n\n<b>ЧЕТВЕРГ:</b>{thursday_f}\
+                \n\n{m}\n\n<b>ПЯТНИЦА:</b>{friday_f}\n\n{m}\n\n<b>СУББОТА:</b>{saturday_f}', parse_mode='html')
+    
+    @bot.message_handler(commands=['nextweek'])
+    def nextweek(message):
+        m = '_' * 25
+        bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА СЛЕДУЮЩУЮ НЕДЕЛЮ:</b>\n\n{m}\n\n<b>ПОНЕДЕЛЬНИК:</b>{monday_l}\
+            \n\n{m}\n\n<b>ВТОРНИК:</b>{tsuesday_l}\n\n{m}\n\n<b>СРЕДА:</b>{wednesday_l}\n\n{m}\n\n<b>ЧЕТВЕРГ:</b>{thursday_l}\
+                \n\n{m}\n\n<b>ПЯТНИЦА:</b>{friday_l}\n\n{m}\n\n<b>СУББОТА:</b>{saturday_l}', parse_mode='html')
+else:
+    @bot.message_handler(commands=['today'])
+    def Today(message):
+        if day_of_week == 0:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА СЕГОДНЯ:</b>{monday_l}', parse_mode='html')
+        elif day_of_week == 1:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА СЕГОДНЯ:</b>{tsuesday_l}', parse_mode='html')
+        elif day_of_week == 2:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА СЕГОДНЯ:</b>{wednesday_l}', parse_mode='html')
+        elif day_of_week == 3:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА СЕГОДНЯ:</b>{thursday_l}' , parse_mode='html')
+        elif day_of_week == 4:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА СЕГОДНЯ:</b>{friday_l}', parse_mode='html')
+        elif day_of_week == 5:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА СЕГОДНЯ:</b>{saturday_l}', parse_mode='html')
+        elif day_of_week == 6:
+            bot.send_message(message.chat.id, f'<b>ВОСКРЕСЕНЬЕ - ВЫХОДНОЙ:</b>', parse_mode='html')
+            
+    @bot.message_handler(commands=['tomorrow'])
+    def Tomorrow(message):
+        if day_of_week == 0:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ЗАВТРА:</b>{tsuesday_l}', parse_mode='html')
+        elif day_of_week == 1:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ЗАВТРА:</b>{wednesday_l}', parse_mode='html')
+        elif day_of_week == 2:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ЗАВТРА:</b>{thursday_l}', parse_mode='html')
+        elif day_of_week == 3:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ЗАВТРА:</b>{friday_l}' , parse_mode='html')
+        elif day_of_week == 4:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ЗАВТРА:</b>{saturday_l}', parse_mode='html')
+        elif day_of_week == 5:
+            bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ЗАВТРА:</b>{monday_l}', parse_mode='html')
+        elif day_of_week == 6:
+            bot.send_message(message.chat.id, f'<b>ВОСКРЕСЕНЬЕ - ВЫХОДНОЙ:</b>', parse_mode='html')    
+
+    @bot.message_handler(commands=['monday'])
+    def Monday(message):
+        bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ПОНЕДЕЛЬНИК:</b>{monday_l}', parse_mode='html')
+        
+    @bot.message_handler(commands=['tsuesday'])
+    def Tsuesday(message):
+        bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ВТОРНИК:</b>{tsuesday_l}', parse_mode='html')
+        
+    @bot.message_handler(commands=['wednesday'])
+    def Wednesday(message):
+        bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА СРЕДУ:</b>{wednesday_l}', parse_mode='html')
+
+    @bot.message_handler(commands=['thursday'])
+    def Thursday(message):
+        bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ЧЕТВЕРГ:</b>{thursday_l}' , parse_mode='html')
+
+    @bot.message_handler(commands=['friday'])
+    def Friday(message):
+        bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА ПЯТНИЦУ:</b>{friday_l}', parse_mode='html')
+        
+    @bot.message_handler(commands=['saturday'])
+    def Saturday(message):
+        bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА СУББОТУ:</b>{saturday_l}', parse_mode='html')
+
+    @bot.message_handler(commands=['week'])
+    def week(message):
+        m = '_' * 25
+        bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА НЕДЕЛЮ:</b>\n\n{m}\n\n<b>ПОНЕДЕЛЬНИК:</b>{monday_l}\
+            \n\n{m}\n\n<b>ВТОРНИК:</b>{tsuesday_l}\n\n{m}\n\n<b>СРЕДА:</b>{wednesday_l}\n\n{m}\n\n<b>ЧЕТВЕРГ:</b>{thursday_l}\
+                \n\n{m}\n\n<b>ПЯТНИЦА:</b>{friday_l}\n\n{m}\n\n<b>СУББОТА:</b>{saturday_l}', parse_mode='html')
+        
+    @bot.message_handler(commands=['nextweek'])
+    def nextweek(message):
+        m = '_' * 25
+        bot.send_message(message.chat.id, f'<b>РАСПИСАНИЕ НА СЛЕДУЮЩУЮ НЕДЕЛЮ:</b>\n\n{m}\n\n<b>ПОНЕДЕЛЬНИК:</b>{monday_f}\
+            \n\n{m}\n\n<b>ВТОРНИК:</b>{tsuesday_f}\n\n{m}\n\n<b>СРЕДА:</b>{wednesday_f}\n\n{m}\n\n<b>ЧЕТВЕРГ:</b>{thursday_f}\
+                \n\n{m}\n\n<b>ПЯТНИЦА:</b>{friday_f}\n\n{m}\n\n<b>СУББОТА:</b>{saturday_f}', parse_mode='html')
+        
+@bot.message_handler(commands=['start'])
+def start(message):
+    bot.send_message(message.chat.id, f'Привет, {message.from_user.first_name}, хочешь узнать свежую информацию о МТУСИ?\
+        \nОтправь: <code>хочу</code>\nСправка: /help', parse_mode='html')
+
+@bot.message_handler(commands=['help'])
+def start_message(message):
+    bot.send_message(message.chat.id, 'Бот предназначен для отправки расписания группы БВТ2206 университета <b>МТУСИ</b>\
+        \n\n<b>Список команд:</b>\n/monday - Расписание на понедельник\n/tsuesday - Расписание на вторник\n/wednesday - Расписание на среду\
+            \n/thursday - Расписание на четверг\n/friday - Расписание на пятницу\n/saturday - Расписание на субботу\n/week - Расписание на текущую неделю\
+                \n/nextweek - Расписание на следующую неделю\n\n<b>Создатель:</b>\n<a href="t.me/serguntsov">Сергунцов Роман</a>', disable_web_page_preview=True, parse_mode='html')
+
+@bot.message_handler(content_types=['text'])
+def answer(message):
+    markup = types.ReplyKeyboardMarkup()
+    markup.add(types.InlineKeyboardButton('Перейти на сайт'))
+    if message.text.lower() == "хочу":        
+        bot.send_message(message.chat.id, 'Тогда тебе сюда:', reply_markup=markup)
+    else:
+        bot.send_message(message.chat.id, 'Неизвестная команда')
+
+bot.polling(non_stop=True)
